@@ -29,8 +29,11 @@ gem 'jbuilder', '~> 2.5'
 # Bootstrap for "views" beauty.
 gem 'bootstrap', '~> 4.3.1'
 
-# Jquery
+# Jquery is a library to JavaScript
 gem 'jquery-rails'
+
+# Simplify the creation of forms
+gem 'simple_form'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
