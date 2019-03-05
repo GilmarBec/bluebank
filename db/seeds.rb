@@ -72,3 +72,7 @@ office_routes = []
 office_routes.each do |route|
   office_relatings.push({office: 3, route: route})
 end
+
+office_relatings.each do |relating|
+  OfficeRelating.create relating
+end
