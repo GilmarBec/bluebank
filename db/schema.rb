@@ -31,7 +31,10 @@ ActiveRecord::Schema.define(version: 20190305044502) do
   end
 
   create_table "routes", force: :cascade do |t|
+    t.string "name"
     t.string "path"
+    t.string "method"
+    t.string "group"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
