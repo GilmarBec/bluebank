@@ -35,6 +35,9 @@ gem 'jquery-rails'
 # Simplify the creation of forms
 gem 'simple_form'
 
+# Devise is a gem to make more secure Authentication
+gem 'devise'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

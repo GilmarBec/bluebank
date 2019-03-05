@@ -35,7 +35,7 @@ routes.each do |route|
   puts("Criando rotas para: "+tmp.name)
 end
 
-puts("##Office")
+puts("\n##Office")
 
 offices = [
   {name: "super_admin"},
@@ -48,7 +48,7 @@ offices.each do |office|
   puts("Criando: "+tmp.name)
 end
 
-puts("##OfficeRelating")
+puts("\n##OfficeRelating")
 
 office_relatings = []
 
@@ -56,21 +56,21 @@ office_relatings = []
 puts("Criando rotas para Super-Admin")
 office_routes = Route.all
 office_routes.each do |route|
-  office_relatings.push({office: 1, route: route})
+  office_relatings.push({office_id: 1, route: route})
 end
 
 puts("Criando rotas para Admin")
 ##Admin
 office_routes = Route.where(group: "office")
 office_routes.each do |route|
-  office_relatings.push({office: 2, route: route})
+  office_relatings.push({office_id: 2, route: route})
 end
 
-puts("Criando rotas para Employee")
+puts("Criando rotas para employee")
 ##Employee
 office_routes = []
 office_routes.each do |route|
-  office_relatings.push({office: 3, route: route})
+  office_relatings.push({office_id: 3, route: route})
 end
 
 office_relatings.each do |relating|

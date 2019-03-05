@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :employees, controllers: { registrations: 'employee/registrations' }
+
   resources :agencies
   resources :addresses
   resources :offices
