@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :clients
   devise_for :employees, controllers: { registrations: 'employee/registrations' }
 
   resources :agencies
