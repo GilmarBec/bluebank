@@ -1,4 +1,4 @@
 class OfficeRelating < ApplicationRecord
-  belongs_to :route
   belongs_to :office
+  belongs_to :route
 end

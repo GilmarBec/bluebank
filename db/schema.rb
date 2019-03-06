@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190305060820) do
+ActiveRecord::Schema.define(version: 20190305074437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 20190305060820) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_agencies_on_address_id"
+  end
+
+  create_table "employee_relatings", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.bigint "address_id"
+    t.bigint "office_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_employee_relatings_on_address_id"
+    t.index ["employee_id"], name: "index_employee_relatings_on_employee_id"
+    t.index ["office_id"], name: "index_employee_relatings_on_office_id"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -79,6 +90,9 @@ ActiveRecord::Schema.define(version: 20190305060820) do
   end
 
   add_foreign_key "agencies", "addresses"
+  add_foreign_key "employee_relatings", "addresses"
+  add_foreign_key "employee_relatings", "employees"
+  add_foreign_key "employee_relatings", "offices"
   add_foreign_key "office_relatings", "offices"
   add_foreign_key "office_relatings", "routes"
 end

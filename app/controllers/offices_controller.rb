@@ -1,5 +1,7 @@
 class OfficesController < ApplicationController
   before_action :set_office, only: [:show, :edit, :update, :destroy]
+  before_action :set_route, only: [:new, :show, :edit, :update, :destroy]
+  before_action :set_office_relating, only: [:show, :edit, :update, :destroy]
 
   # GET /offices
   # GET /offices.json
@@ -14,7 +16,6 @@ class OfficesController < ApplicationController
 
   # GET /offices/new
   def new
-    @office = Office.new
   end
 
   # GET /offices/1/edit
@@ -25,6 +26,12 @@ class OfficesController < ApplicationController
   # POST /offices.json
   def create
     @office = Office.new(office_params)
+    @relatings = JSON.parse(params[:office_relating])
+
+    @relatings.each do |relating|
+      @office_relating = OfficeRelating.create(office: @office, route_id: relating)
+      @office_relating.save
+    end
 
     respond_to do |format|
       if @office.save
@@ -40,6 +47,13 @@ class OfficesController < ApplicationController
   # PATCH/PUT /offices/1
   # PATCH/PUT /offices/1.json
   def update
+    @relatings = JSON.parse(params[:office_relating])
+
+    @relatings.each do |relating|
+      @office_relating = OfficeRelating.create(office: @office, route_id: relating)
+      @office_relating.save
+    end
+
     respond_to do |format|
       if @office.update(office_params)
         format.html { redirect_to @office, notice: 'Office was successfully updated.' }
@@ -54,6 +68,10 @@ class OfficesController < ApplicationController
   # DELETE /offices/1
   # DELETE /offices/1.json
   def destroy
+    @office_relating.each do |relating|
+      relating.destroy
+    end
+
     @office.destroy
     respond_to do |format|
       format.html { redirect_to offices_url, notice: 'Office was successfully destroyed.' }
@@ -65,6 +83,14 @@ class OfficesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_office
       @office = Office.find(params[:id])
+    end
+
+    def set_office_relating
+      @office_relating = OfficeRelating.where(office_id: @office.id)
+    end
+
+    def set_route
+      @routes = Route.all
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

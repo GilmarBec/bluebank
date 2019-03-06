@@ -1,15 +1,43 @@
+<input type="text" name="name" id="office_name">
 
-<%= simple_form_for(@office) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
-  <div class="form-inputs">
-
-    <%= f.input :name %>
-
+<!-- Rotas -->
+<% tmp = @routes[1].group %>
+<div class="row">
+  <div class="col-6">
+    <h5 onclick="selectGroupCheckboxRoutes('<%= @routes[1].group %>')" ><%= @routes[1].group %></h5>
+    <% @routes.each do |route| %>
+      <% if tmp != route.group %>
+        <% tmp = route.group  %>
+        </div>
+        <div class="col-6">
+          <h5 onclick="selectGroupCheckboxRoutes('<%= route.group %>')"><%= route.group %></h5>
+      <% end %>
+      <input type="checkbox" id="route<%= route.id %>" class="routes <%= route.group %>" value="<%= route.id %>"><label for="route<%= route.id %>"><%= route.name %></label><br>
+    <% end %>
   </div>
+</div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
-<% end %>
+<button onclick="getCheckboxRoute(cont, url, method)" class="btn btn-success">Salvar</button>
+
+<script>
+  $(document).ready(function(){
+    cont = <%= @routes.length %>;
+    url = "/offices";
+    method = "post";
+
+    <% if !@office.nil? %>
+      $("#office_name").val("<%= @office.name %>");
+      url = "/offices/<%= @office.id %>";
+      method = "patch";
+
+      // Check checkbox With Offices relating
+		  office_relatings = [];
+		  <% if !@office_relating.nil? %>
+        <% @office_relating.each_with_index do |relating, i| %>
+          office_relatings[<%= i %>] = <%= relating.id %>;
+        <% end %>
+		  <% end %>
+      selectCheckboxRoutes(office_relatings);
+		<% end %>
+  });
+</script>

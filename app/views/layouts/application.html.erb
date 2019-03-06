@@ -8,11 +8,19 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+
+
+
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
     <div class="container">
+      <% if employee_signed_in? %>
+        <%= link_to destroy_employee_session_path, method: :delete, class: "btn btn-success" do %>
+          Sair
+        <% end %>
+      <% end %>
       <%= yield %>
     </div>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
   </body>
 </html>
