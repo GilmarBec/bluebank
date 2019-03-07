@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :accounts
   get 'client_session/create'
 
   get 'client_session/update'

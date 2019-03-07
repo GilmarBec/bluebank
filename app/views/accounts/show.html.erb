@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @account.number %>
+</p>
+
+<p>
+  <strong>Current amount:</strong>
+  <%= @account.current_amount %>
+</p>
+
+<p>
+  <strong>Credit:</strong>
+  <%= @account.credit %>
+</p>
+
+<p>
+  <strong>Password digest:</strong>
+  <%= @account.password_digest %>
+</p>
+
+<p>
+  <strong>Account type:</strong>
+  <%= @account.account_type %>
+</p>
+
+<p>
+  <strong>Agency:</strong>
+  <%= @account.agency %>
+</p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @account.client %>
+</p>
+
+<%= link_to 'Edit', edit_account_path(@account) %> |
+<%= link_to 'Back', accounts_path %>

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  current_amount: 1.5
+  credit: 1.5
+  password_digest: MyString
+  account_type: one
+  agency: one
+  client: one
+
+two:
+  number: 1
+  current_amount: 1.5
+  credit: 1.5
+  password_digest: MyString
+  account_type: two
+  agency: two
+  client: two

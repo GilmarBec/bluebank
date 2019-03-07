@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  value: 1.5
+  operation_date: 2019-03-07 04:44:31
+  operation: one
+
+two:
+  value: 1.5
+  operation_date: 2019-03-07 04:44:31
+  operation: two

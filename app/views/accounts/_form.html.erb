@@ -1,0 +1,25 @@
+
+<%= simple_form_for(@account) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+
+    <%= f.input :number %>
+
+    <%= f.input :credit %>
+
+    <%= f.input :password_digest %>
+
+    <%= f.association :account_type %>
+
+    <%= f.association :agency %>
+
+    <%= f.association :client %>
+
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

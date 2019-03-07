@@ -10,10 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190307034834) do
+ActiveRecord::Schema.define(version: 20190307074853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "accounts", force: :cascade do |t|
+    t.integer "number", null: false
+    t.float "current_amount", default: 0.0
+    t.float "credit", default: 0.0
+    t.string "password_digest", null: false
+    t.bigint "account_type_id"
+    t.bigint "agency_id"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_type_id"], name: "index_accounts_on_account_type_id"
+    t.index ["agency_id"], name: "index_accounts_on_agency_id"
+    t.index ["client_id"], name: "index_accounts_on_client_id"
+  end
+
+  create_table "accounts_moviments", id: false, force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "moviment_id", null: false
+  end
 
   create_table "addresses", force: :cascade do |t|
     t.string "cep"
@@ -78,6 +105,15 @@ ActiveRecord::Schema.define(version: 20190307034834) do
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
   end
 
+  create_table "moviments", force: :cascade do |t|
+    t.float "value", default: 0.0
+    t.datetime "operation_date"
+    t.bigint "operation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["operation_id"], name: "index_moviments_on_operation_id"
+  end
+
   create_table "office_relatings", force: :cascade do |t|
     t.bigint "route_id"
     t.bigint "office_id"
@@ -122,11 +158,15 @@ ActiveRecord::Schema.define(version: 20190307034834) do
     t.index ["route_id"], name: "index_rules_on_route_id"
   end
 
+  add_foreign_key "accounts", "account_types"
+  add_foreign_key "accounts", "agencies"
+  add_foreign_key "accounts", "clients"
   add_foreign_key "agencies", "addresses"
   add_foreign_key "clients", "addresses"
   add_foreign_key "employee_relatings", "addresses"
   add_foreign_key "employee_relatings", "employees"
   add_foreign_key "employee_relatings", "offices"
+  add_foreign_key "moviments", "operations"
   add_foreign_key "office_relatings", "offices"
   add_foreign_key "office_relatings", "routes"
   add_foreign_key "rules", "routes"
