@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190305074437) do
+ActiveRecord::Schema.define(version: 20190307034834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,19 @@ ActiveRecord::Schema.define(version: 20190305074437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_agencies_on_address_id"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "token"
+    t.string "cpf", null: false
+    t.string "login", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.bigint "address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_clients_on_address_id"
   end
 
   create_table "employee_relatings", force: :cascade do |t|
@@ -80,6 +93,18 @@ ActiveRecord::Schema.define(version: 20190305074437) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "offices_rules", id: false, force: :cascade do |t|
+    t.bigint "office_id", null: false
+    t.bigint "rule_id", null: false
+  end
+
+  create_table "operations", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "routes", force: :cascade do |t|
     t.string "name"
     t.string "path"
@@ -89,10 +114,20 @@ ActiveRecord::Schema.define(version: 20190305074437) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rules", force: :cascade do |t|
+    t.boolean "status"
+    t.bigint "route_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["route_id"], name: "index_rules_on_route_id"
+  end
+
   add_foreign_key "agencies", "addresses"
+  add_foreign_key "clients", "addresses"
   add_foreign_key "employee_relatings", "addresses"
   add_foreign_key "employee_relatings", "employees"
   add_foreign_key "employee_relatings", "offices"
   add_foreign_key "office_relatings", "offices"
   add_foreign_key "office_relatings", "routes"
+  add_foreign_key "rules", "routes"
 end
