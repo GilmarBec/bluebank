@@ -16,11 +16,6 @@
 </p>
 
 <p>
-  <strong>Password digest:</strong>
-  <%= @account.password_digest %>
-</p>
-
-<p>
   <strong>Account type:</strong>
   <%= @account.account_type %>
 </p>
@@ -35,5 +30,4 @@
   <%= @account.client %>
 </p>
 
-<%= link_to 'Edit', edit_account_path(@account) %> |
 <%= link_to 'Back', accounts_path %>

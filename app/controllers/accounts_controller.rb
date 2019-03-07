@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :authenticate_employee!
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
   # GET /accounts
@@ -15,16 +16,23 @@ class AccountsController < ApplicationController
   # GET /accounts/new
   def new
     @account = Account.new
+    @account_types = AccountType.all
+    @agencies = Agency.all
   end
 
   # GET /accounts/1/edit
   def edit
+    @account_types = AccountType.all
+    @agencies = Agency.all
   end
 
   # POST /accounts
   # POST /accounts.json
   def create
     @account = Account.new(account_params)
+    @account.agency_id = params[:agency]
+    @account.client = Client.find_by(cpf: params[:cpf])
+    @account.password_digest = BCrypt::Password.create(params[:password_digest])
 
     respond_to do |format|
       if @account.save
@@ -40,6 +48,10 @@ class AccountsController < ApplicationController
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
   def update
+    @account.agency = params[:agency]
+    @account.client = Client.find_by(cpf: params["cpf"])
+    @account.password_digest = BCrypt::Password.create(params[:password_digest])
+
     respond_to do |format|
       if @account.update(account_params)
         format.html { redirect_to @account, notice: 'Account was successfully updated.' }
@@ -69,6 +81,6 @@ class AccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def account_params
-      params.require(:account).permit(:number, :current_amount, :credit, :password_digest, :account_type_id, :agency_id, :client_id)
+      params.require(:account).permit(:number, :credit, :account_type_id, :agency_id, :client_id)
     end
 end

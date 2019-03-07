@@ -1,25 +1,51 @@
+<div class="form-account">
+  <label for="number">Número: </label>
+  <input type="text" id="number">
 
-<%= simple_form_for(@account) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <label for="credit">Crédito: </label>
+  <input type="text" id="credit">
 
-  <div class="form-inputs">
+  <label for="account_type">Tipo de Conta: </label>
+  <select id="account_type">
+    <% @account_types.each do |account_type| %>
+      <option value="<%= account_type.id %>"><%= account_type.name %></option>
+    <% end %>
+  </select>
 
-    <%= f.input :number %>
+  <select id="agency">
+    <% @agencies.each do |agency| %>
+      <option value="<%= agency.id %>"><%= agency.number %></option>
+    <% end %>
+  </select>
 
-    <%= f.input :credit %>
+  <label for="client">CPF do Cliente: </label>
+  <input type="text" id="client">
 
-    <%= f.input :password_digest %>
+  <label for="password">Senha: </label>
+  <input type="password" id="password">
+</div>
 
-    <%= f.association :account_type %>
+<button onclick="submitAccount(url, method)">Salvar</button>
 
-    <%= f.association :agency %>
+<script>
+  url = "/accounts";
+  method = "post";
 
-    <%= f.association :client %>
+  <% if !@client_cpf.nil? %>
+    url = "/accounts/<%= @account.id %>";
+    method = "patch";
 
-  </div>
+    function loadParams(){
+      params = [];
+      params["number"] = "<%= @account.number %>";
+      params["credit"] = "<%= @account.credit %>";
+      params["agency"] = "<%= @account.agency.id %>";
+      params["account_type"] = "<%= @account.account_type.id %>";
+      params["client"] = "<%= @account.client.cpf %>";
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
-<% end %>
+      return params;
+    }
+
+    loadAccountInformations(loadParams());
+  <% end %>
+</script>

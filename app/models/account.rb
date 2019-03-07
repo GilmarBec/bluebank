@@ -1,4 +1,7 @@
 class Account < ApplicationRecord
+  has_secure_password
+  include BCrypt
+
   belongs_to :account_type
   belongs_to :agency
   belongs_to :client
