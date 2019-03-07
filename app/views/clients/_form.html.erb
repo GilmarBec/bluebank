@@ -46,5 +46,36 @@
   <% if !@address.nil? %>
     url = "/clients/"+<%= @client.id %>;
     method = "patch";
+
+    loadClientInformations(loadParams());
+
+    function loadParams(){
+      params = [];
+      params["name"] = "<%= @client.name %>";
+      params["cpf"] = "<%= @client.cpf %>";
+      params["email"] = "<%= @client.email %>";
+      params["login"] = "<%= @client.login %>";
+      params["cep"] = "<%= @client.address.cep %>";
+      params["state"] = "<%= @client.address.state %>";
+      params["city"] = "<%= @client.address.city %>";
+      params["district"] = "<%= @client.address.district %>";
+      params["street"] = "<%= @client.address.street %>";
+      params["number"] = "<%= @client.address.number %>";
+
+      return params;
+    }
+
+    function loadClientInformations(params){
+      $("#name").val(params["name"]);
+      $("#cpf").val(params["cpf"]);
+      $("#email").val(params["email"]);
+      $("#login").val(params["login"]);
+      $("#cep").val(params["cep"]);
+      $("#state").val(params["state"]);
+      $("#city").val(params["city"]);
+      $("#district").val(params["district"]);
+      $("#street").val(params["street"]);
+      $("#number").val(params["number"]);
+    }
   <% end %>
 </script>

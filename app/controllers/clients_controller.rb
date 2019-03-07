@@ -48,7 +48,7 @@ class ClientsController < ApplicationController
   # PATCH/PUT /clients/1.json
   def update
     @address.update(address_params)
-    if @client.password_digest != params[:client][:password_digest]
+    if !params[:client][:password_digest].nil?
       @client.password_digest = BCrypt::Password.create(params[:client][:password_digest])
     end
 
@@ -73,14 +73,6 @@ class ClientsController < ApplicationController
     end
   end
 
-  def createSession
-    @client = Client.find_by(name: params.login)
-    if @client.password_digest == client_params.password_digest && @client.authenticate(client_params.password_digest)
-      @client.update(token: SecureRandom.hex(16))
-      render json: @client.token
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client
@@ -93,10 +85,10 @@ class ClientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def client_params
-      params.require(:client).permit(:name, :token, :cpf, :email, :login, :password_digest, :address_id)
+      params.require(:client).permit(:name, :token, :cpf, :email, :login, :address_id)
     end
 
     def address_params
-      params.require(:client).permit(:cep, :state, :city, :district, :street, :number)
+      params.require(:address).permit(:cep, :state, :city, :district, :street, :number)
     end
 end
