@@ -32,11 +32,7 @@
 
       // Check checkbox With Offices relating
 		  office_relatings = [];
-		  <% if !@office_relating.nil? %>
-        <% @office_relating.each_with_index do |relating, i| %>
-          office_relatings[<%= i %>] = <%= relating.id %>;
-        <% end %>
-		  <% end %>
+
       selectCheckboxRoutes(office_relatings);
 		<% end %>
   });
