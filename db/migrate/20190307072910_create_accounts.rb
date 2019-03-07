@@ -1,7 +1,7 @@
 class CreateAccounts < ActiveRecord::Migration[5.1]
   def change
     create_table :accounts do |t|
-      t.integer :number,          null: false
+      t.integer :number,          null: false, unique:true
       t.float :current_amount,    default: 0.0
       t.float :credit,            default: 0.0
       t.string :password_digest,  null:false

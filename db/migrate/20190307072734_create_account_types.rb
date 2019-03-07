@@ -1,8 +1,8 @@
 class CreateAccountTypes < ActiveRecord::Migration[5.1]
   def change
     create_table :account_types do |t|
-      t.string :name
-      t.integer :code
+      t.string :name, unique:true
+      t.integer :code, unique:true
 
       t.timestamps
     end

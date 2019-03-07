@@ -36,7 +36,7 @@
 </div>
 
 <div class="form-actions">
-  <button onclick="submitClient(url, method)">Salvar</button>
+  <button class="btn btn-success" onclick="submitClient(url, method)">Salvar</button>
 </div>
 
 <script>
@@ -46,8 +46,6 @@
   <% if !@address.nil? %>
     url = "/clients/"+<%= @client.id %>;
     method = "patch";
-
-    loadClientInformations(loadParams());
 
     function loadParams(){
       params = [];
@@ -65,17 +63,6 @@
       return params;
     }
 
-    function loadClientInformations(params){
-      $("#name").val(params["name"]);
-      $("#cpf").val(params["cpf"]);
-      $("#email").val(params["email"]);
-      $("#login").val(params["login"]);
-      $("#cep").val(params["cep"]);
-      $("#state").val(params["state"]);
-      $("#city").val(params["city"]);
-      $("#district").val(params["district"]);
-      $("#street").val(params["street"]);
-      $("#number").val(params["number"]);
-    }
+    loadClientInformations(loadParams());
   <% end %>
 </script>

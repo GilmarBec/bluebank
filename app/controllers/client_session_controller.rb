@@ -1,4 +1,4 @@
-class ClientSessionController < ApplicationController
+class ClientSessionController < ApiController
   before_action :new_client, only: [:create]
   before_action :set_client, only: [:update, :destroy]
 

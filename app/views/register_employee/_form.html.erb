@@ -1,0 +1,68 @@
+<div class="form-employee">
+	<label for="name">Nome: </label>
+	<input type="text" id="name">
+
+	<select id="office">
+		<% @offices.each do |office|%>
+			<option value="<%= office.id %>"><%= office.name %></option>
+		<% end %>
+	</select>
+
+	<label for="email">E-mail: </label>
+	<input type="text" id="email">
+
+	<label for="login">Login: </label>
+	<input type="text" id="login">
+
+	<label for="password">Senha: </label>
+	<input type="password" id="password">
+</div>
+
+<div class="form-address">
+	<label for="cep">Cep: </label>
+	<input type="text" id="cep">
+
+	<label for="state">Estado: </label>
+	<input type="text" id="state">
+
+	<label for="city">Cidade: </label>
+	<input type="text" id="city">
+
+	<label for="district">Bairro: </label>
+	<input type="text" id="district">
+
+	<label for="street">Rua: </label>
+	<input type="text" id="street">
+
+	<label for="number">Numero: </label>
+	<input type="number" id="number">
+</div>
+
+<button class="btn btn-success" onclick="submitEmployee(url)">Salvar</button>
+
+<script>
+	url = "create";
+
+	<% if !@employee_relation.nil? %>
+		url = "update";
+
+		function loadParams(){
+			params = [];
+			params["name"] = "<%= @employee_relation.employee.name %>";
+			params["office"] = "<%= @employee_relation.office.id %>";
+			params["email"] = "<%= @employee_relation.employee.email %>";
+			params["login"] = "<%= @employee_relation.employee.login %>";
+			params["cep"] = "<%= @employee_relation.address.cep %>";
+			params["state"] = "<%= @employee_relation.address.state %>";
+			params["city"] = "<%= @employee_relation.address.city %>";
+			params["district"] = "<%= @employee_relation.address.district %>";
+			params["street"] = "<%= @employee_relation.address.street %>";
+			params["number"] = "<%= @employee_relation.address.number %>";
+
+			return params;
+		}
+
+		loadEmployeeRelationInformations(loadParams());
+
+	<% end %>
+</script>

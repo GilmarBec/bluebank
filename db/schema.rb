@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190307074853) do
+ActiveRecord::Schema.define(version: 20190307174356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 20190307074853) do
     t.index ["office_id"], name: "index_employee_relatings_on_office_id"
   end
 
+  create_table "employee_relations", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.bigint "address_id"
+    t.bigint "office_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_employee_relations_on_address_id"
+    t.index ["employee_id"], name: "index_employee_relations_on_employee_id"
+    t.index ["office_id"], name: "index_employee_relations_on_office_id"
+  end
+
   create_table "employees", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -112,15 +123,6 @@ ActiveRecord::Schema.define(version: 20190307074853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["operation_id"], name: "index_moviments_on_operation_id"
-  end
-
-  create_table "office_relatings", force: :cascade do |t|
-    t.bigint "route_id"
-    t.bigint "office_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["office_id"], name: "index_office_relatings_on_office_id"
-    t.index ["route_id"], name: "index_office_relatings_on_route_id"
   end
 
   create_table "offices", force: :cascade do |t|
@@ -166,8 +168,9 @@ ActiveRecord::Schema.define(version: 20190307074853) do
   add_foreign_key "employee_relatings", "addresses"
   add_foreign_key "employee_relatings", "employees"
   add_foreign_key "employee_relatings", "offices"
+  add_foreign_key "employee_relations", "addresses"
+  add_foreign_key "employee_relations", "employees"
+  add_foreign_key "employee_relations", "offices"
   add_foreign_key "moviments", "operations"
-  add_foreign_key "office_relatings", "offices"
-  add_foreign_key "office_relatings", "routes"
   add_foreign_key "rules", "routes"
 end

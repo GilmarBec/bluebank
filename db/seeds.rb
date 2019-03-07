@@ -6,8 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-puts("##Routes")
-
+## Routes
 routes = [
   ## Route
   {name: "Lista de Rotas", path: "/routes", method: "get", group: "route"},         #Index
@@ -31,11 +30,10 @@ routes = [
 ]
 
 routes.each do |route|
-  tmp = Route.create(route)
-  puts("Criando rotas para: "+tmp.name)
+  Route.create(route)
 end
 
-puts("\n##Office")
+## Offices
 
 offices = [
   {name: "super_admin"},
@@ -44,35 +42,77 @@ offices = [
 ]
 
 offices.each do |office|
-  tmp = Office.create office
-  puts("Criando: "+tmp.name)
+  Office.create office
 end
 
-puts("\n##OfficeRelating")
+## Operations
+operations = [
+	{name: "transação", code: 101}
+]
 
-office_relatings = []
-
-##Super Admin
-puts("Criando rotas para Super-Admin")
-office_routes = Route.all
-office_routes.each do |route|
-  office_relatings.push({office_id: 1, route: route})
+operations.each do |operation|
+	Operation.create operation
 end
 
-puts("Criando rotas para Admin")
-##Admin
-office_routes = Route.where(group: "office")
-office_routes.each do |route|
-  office_relatings.push({office_id: 2, route: route})
+## Account Types
+account_types = [
+	{name: "corrente", code: 101},
+	{name: "poupança", code: 102}
+]
+
+account_types.each do |account_type|
+	AccountType.create account_type
 end
 
-puts("Criando rotas para employee")
-##Employee
-office_routes = []
-office_routes.each do |route|
-  office_relatings.push({office_id: 3, route: route})
+
+## Employees
+employees = [
+	{
+		name: "Administrador",
+		email: "trabalhos4.5.1.4@gmail.com",
+		login: "Admin",
+		password: "asd123",
+		password_confirmation: "asd123"
+	}
+]
+
+employees.each do |employee|
+	Employee.create employee
 end
 
-office_relatings.each do |relating|
-  OfficeRelating.create relating
+
+## Employee Relations
+employee_relations = [
+	{employee_id: 1, office_id: 1, address_id: 1}
+]
+employee_relations.each do |relation|
+	EmployeeRelation.create relation
+end
+
+
+## Addresses
+addresses = [
+	{
+		cep: "88106785",
+		state: "SC",
+		city: "São José",
+		district: "Forquilhinhas",
+		street: "Alguma",
+		number: 649
+	}
+]
+addresses.each do |address|
+  Address.create address
+end
+
+## Agencies
+agencies = [
+	{number: 101, address_id: 1},
+	{number: 102, address_id: 1},
+	{number: 103, address_id: 1},
+	{number: 104, address_id: 1}
+]
+
+agencies.each do |agency|
+  Agency.create agency
 end

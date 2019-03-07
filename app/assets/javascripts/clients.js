@@ -34,8 +34,20 @@ function submitClient(url, method){
 			}
 		},
 		success:{function(){
-			window.location.href = "/client";
+			window.location.href = "/clients";
 		}}
 	});
 }
 
+function loadClientInformations(params){
+	$("#name").val(params["name"]);
+	$("#cpf").val(params["cpf"]);
+	$("#email").val(params["email"]);
+	$("#login").val(params["login"]);
+	$("#cep").val(params["cep"]);
+	$("#state").val(params["state"]);
+	$("#city").val(params["city"]);
+	$("#district").val(params["district"]);
+	$("#street").val(params["street"]);
+	$("#number").val(params["number"]);
+}
