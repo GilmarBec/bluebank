@@ -20,3 +20,10 @@ rake db:seed
 ```
 
 Open the site and navegate in the system
+
+
+## SPA (mobile and web)
+
+Download the archive: SPA.html
+
+open the archive in chrome
