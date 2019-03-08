@@ -1,59 +1,75 @@
 class MovementApiController < ApiController
-  before_action :set_client
-  before_action :set_account
-  before_action :set_destiny, only: :transaction
-
+  before_action :set_client, only: [:transaction, :check_amount, :extract, :destroy_session]
+  before_action :set_account, only: :transaction
 
   def transaction
-    if !@client.nil? && !@account.nil? && !@destiny.nil?
-      @total = @account.credit + @account.current_amount
+    if !@client.nil? && !@account.nil?
+      @total = @client.credit + @client.current_amount
       @value = params[:value].to_f
       if (@value > 0) && ((@total - @value) >= 0)
-        if @value <= @account.current_amount
-          @account.update(@account.current_amount - @value)
+        if @value <= @client.current_amount
+          @client.update(@client.current_amount - @value)
         else
-          @value -= @account.current_amount
-          @account.update(credit: @account.credit - @value, current_amount: 0.0)
+          @value -= @client.current_amount
+          @client.update(credit: @client.credit - @value, current_amount: 0.0)
         end
 
-        @destiny.update(current_amount: @destiny.current_amount + @value)
-        render json: {"resp": "Transferencia concluida com sucesso!", status: 200}
+        @account.update(current_amount: @account.current_amount + @value)
+
+        @transference = Transference.create(value: @value, account: @client, account_receiver_id: @account)
+        render json: {"resp": "Transferência concluida com sucesso!", status: 200}
+      else
+        render json: {"erro": "Valor de Saldo + Crédito insuficiente!"}
       end
+    else
+      render json: {"erro": "Numero de agencia ou de conta invalidos!"}
     end
   end
 
-  def show
-    if !@client.nil? && !@account.nil?
-      render json: {"current_amount": @account.current_amount, "credit": @account.credit}
+  def check_amount
+    if !@client.nil?
+      render json: {"current_amount": @client.current_amount, "credit": @client.credit}
     end
-    render json: "client ou conta incorreta"
+    render json: ""
+  end
+
+  def extract
+    require 'json'
+
+    if !@client.nil?
+      @extract = Transference.find_by(client: @client).or(Transference.find_by(account_receiver_id: @client.id))
+      @extract = @extract.order(create_at: :desc)
+      render json: JSON.generate(@extract)
+    end
+  end
+
+  def create_session
+    client = Account.find_by(number: params[:client][:number])
+    if !client.nil?
+      token = SecureRandom.hex(16).to_s
+      client.update(token: token.to_s)
+      render json: {"token": client.token}
+    end
+  end
+
+  def destroy_session
+    unless @client.nil?
+      @client.update(token: "")
+    end
   end
 
   private
     def set_client
-      client = Client.find_by(token: params[:token])
-      if client
-        @client = client
+      account = Account.find_by(token: params[:token])
+      if !account.nil?
+        @client = account
       end
     end
 
     def set_account
-      agency = Agency.find_by(number: params[:account][:agency])
-      if !agency.nil?
-        account = Account.find_by(number: params[:account][:number], agency: agency)
-        if account && account.authenticate(params[:account][:password])
-          @account = account
-        end
-      end
-    end
-
-    def set_destiny
-      agency = Agency.find_by(number: params[:destiny][:agency])
-      if !agency.nil?
-        account = Account.find_by(number: params[:destiny][:number], agency: agency)
-        if !account.nil?
-          @destiny = account
-        end
+      account = Account.find_by(number: params[:number], agency: params[:agency])
+      if !account.nil?
+        @account = account
       end
     end
 end

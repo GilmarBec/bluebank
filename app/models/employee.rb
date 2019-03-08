@@ -7,6 +7,4 @@ class Employee < ApplicationRecord
 
   validates :email, uniqueness: true
   validates :login, uniqueness: true
-
-  has_many :employee_relating, dependent: :destroy
 end

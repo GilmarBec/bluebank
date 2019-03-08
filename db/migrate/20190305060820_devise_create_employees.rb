@@ -23,6 +23,8 @@ class DeviseCreateEmployees < ActiveRecord::Migration[5.1]
 
       t.string :name
       t.string :login, null:false
+      t.string :agency
+      t.string :office
 
       t.timestamps null: false
     end
