@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Blue Bank</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style>
+		.hidden {
+			display: none;
+		}
+
+		.h3 {
+			font-size: 1rem;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		@media(min-width: 720px) {
+			.h3 {
+				font-size: 1.75rem;
+				font-weight: inherit;
+			}
+		}
+
+		.cursor-pointer {
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body class="bg-secondary">
+<section>
+	<div class="container">
+		<div class="card mt-4">
+			<div class="card-body alert-info">
+				<h4>
+					<span id="ammountSpan">
+						Saldo atual: <span id="currentAmmount">0</span>
+					</span>
+
+					<span id="hiddenAmmountSpan" class="hidden">
+							Saldo atual
+						</span>
+
+					<button id="hideAmmountBtn" class="btn btn-secondary float-right" onclick=''>Ocultar</button>
+
+					<button id="showAmmountBtn" class="btn btn-secondary float-right hidden" onclick=''>Exibir</button>
+				</h4>
+			</div>
+		</div>
+
+		<div class="card bg-info mt-2">
+			<div class="card-header bg-light mx-2 mt-2 shadow">
+				<h3 class="card-title">Operações</h3>
+			</div>
+
+			<div class="card-body row">
+				<div id="transference" class="card col-md-3 col-5 py-5 mx-1 bg-light shadow cursor-pointer">
+						<span class="h3">
+							Transferência
+						</span>
+				</div>
+
+				<div id="extract" class="card col-md-3 ml-auto ml-md-2 col-5 py-5 mx-1 bg-light shadow cursor-pointer">
+						<span class="h3">
+							Extrato
+						</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade mt-5" id="loginModal" role="dialog" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog mt-5 pt-5 pt-md-0">
+			<div class="modal-content">
+				<div class="modal-header">
+						<span class="modal-title h3" id="loginModalLabel">Você deve se autenticar para continuar</span>
+					</div>
+		
+					<div class="modal-body">
+						<form id="loginForm">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span id="accountSpan" class="input-group-text">Conta: </span>
+								</div>
+		
+								<input id="accountNumber" class="form-control" type="number" placeholder="000000" aria-describedby="accountSpan">
+							</div>
+		
+							<div class="input-group mt-2">
+								<div class="input-group-prepend">
+									<span id="agencySpan" class="input-group-text">Agência: </span>
+								</div>
+		
+								<input id="agencyNumber" class="form-control" type="number" placeholder="000" aria-describedby="agencySpan">
+							</div>
+		
+							<div class="input-group mt-2">
+								<div class="input-group-prepend">
+									<span id="passwordSpan" class="input-group-text">Senha: </span>
+								</div>
+		
+								<input id="password" class="form-control" type="password" placeholder="******" aria-describedby="passwordSpan">
+							</div>
+
+							<button id="loginButton" type="submit" class="btn btn-primary float-right mt-2" onclick=''>Entrar</button>
+						</form>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade mt-5" id="transferenceModal" role="dialog" aria-hidden="true">
+		<div class="modal-dialog mt-5 pt-5 pt-md-0">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="modal-title h3" id="transferenceModalLabel">Transferência</span>
+				</div>
+
+				<div class="modal-body">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span id="accountReceiverSpan" class="input-group-text">Conta: </span>
+						</div>
+
+						<input id="accountReceiverNumber" class="form-control" type="number" placeholder="000000" aria-describedby="accountReceiverSpan">
+					</div>
+
+					<div class="input-group mt-2">
+						<div class="input-group-prepend">
+							<span id="agencyReceiverSpan" class="input-group-text">Agência: </span>
+						</div>
+
+						<input id="agencyReceiver" class="form-control" type="number" placeholder="0000" aria-describedby="agencyReceiverSpan">
+					</div>
+
+					<div class="input-group mt-2">
+						<div class="input-group-prepend">
+							<span id="tranferenceValueSpan" class="input-group-text">Valor: </span>
+						</div>
+
+						<input id="tranferenceValue" class="form-control" type="number" step="0.01" placeholder="0,00" aria-describedby="tranferenceValueSpan">
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button id="transferenceButton" type="button" class="btn btn-primary" onclick=''>Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade mt-5" id="extractModal" role="dialog" aria-hidden="true">
+		<div class="modal-dialog mt-5 pt-5 pt-md-0">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="modal-title h3" id="extractModalLabel">Extrato dos últimos 30 dias</span>
+				</div>
+
+				<div class="modal-body" id="extract-list">
+					<ul class="list-group text-center">
+						<li class="list-group-item">Dapibus ac facilisis in</li>
+						<li class="list-group-item">Dapibus ac facilisis in</li>
+						<li class="list-group-item">Dapibus ac facilisis in</li>
+					</ul>
+				</div>
+
+				<div class="modal-footer">
+					<button id="extractButton" type="button" class="btn btn-primary" onclick='' data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<script>
+	var token;
+
+	$("#transference").click(function() {
+		$("#transferenceModal").modal('show');
+
+	});
+	$("#extract").click(function() {
+		$("#extractModal").modal('show');
+
+	});
+	$(function() {
+		let url_base = "http://localhost:3000/";
+
+		url_base = "https://bluebank-site.herokuapp.com/";
+
+		validateCurrentAccess();
+		function validateCurrentAccess() {
+
+			let $loginModal = $("#loginModal");
+			if (localStorage.getItem("token")) {
+				let date = new Date();
+
+				let datetime = date.getFullYear()
+					+ (date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth())
+					+ (date.getDay() < 10 ? "0" + date.getDay() : date.getDay())
+					+ (date.getHours() < 10 ? "0" + date.getHours() : date.getHours())
+					+ (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+				if (localStorage.getItem("tokenExpires") < datetime) {
+					localStorage.removeItem("token");
+
+					localStorage.removeItem("tokenExpires");
+					$loginModal.modal('show');
+
+					return false;
+				}
+
+				datetime = date.getFullYear()
+					+ (date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth())
+					+ (date.getDay() < 10 ? "0" + date.getDay() : date.getDay())
+					+ (date.getHours() < 10 ? "0" + date.getHours() : date.getHours())
+					+ (date.getMinutes() + 15);
+
+				localStorage.setItem("tokenExpires", datetime);
+				
+				return true;
+			}
+
+			$loginModal.modal('show');
+
+			return false;
+		}
+		$("#loginButton").click(function () {
+			login();
+		});
+
+		$("#loginForm").on('submit', function () {
+			login();
+			return false;
+		});
+
+		$("#transferenceButton").click(function () {
+			transference();
+		});
+
+		$("#extract").click(function () {
+			extract();
+		});
+
+		function login() {
+			let account = $("#accountNumber").val();
+			let agency = $("#agencyNumber").val();
+			let password = $("#password").val();
+
+			$.ajax({
+				url: url_base+"movement_api/create_session.json",
+				method: "POST",
+				dataType: 'json',
+				data: {
+					number: account,
+					agency: agency,
+					password: password
+				},
+				success: function(data) {
+					logged(data);
+				},
+				error: function () {
+					alert("Número da conta inválido ou senha incorreta!");
+				}
+			});
+
+		}
+
+		function transference() {
+			if (!validateCurrentAccess()) {
+				return false;
+			}
+
+			let account = $("#accountReceiverNumber").val();
+			let agency = $("#agencyReceiver").val();
+			let value = $("#tranferenceValue").val();
+
+			let token = localStorage.getItem("token");
+
+			$.ajax({
+				url: url_base+"movement_api/transaction.json",
+				method: "get",
+				dataType: "json",
+				data: {
+					number: account,
+					agency: agency,
+					value: value,
+					token: token
+				},
+				success: function() {
+					
+				},
+				error: function () {
+					alert("Conta inválida ou quantia de fundos insuficiente!");
+				}
+			});
+
+		}
+
+		function extract() {
+			if (!validateCurrentAccess()) {
+				return false;
+			}
+
+			let token = localStorage.getItem("token");
+
+			$.ajax({
+				url: url_base+"movement_api/extract.json",
+				method: "get",
+				data: {
+					token: token
+				},
+				success: function(data) {
+					loadExtract(data);
+				},
+				error: function () {
+					alert("Token inválido ou servidor inacessivel!");
+				}
+			});
+		}
+		
+		function loadExtract(array){
+			$("#extract-list").html("");
+			for(i = 1; i <= array.length; i++){
+				let li = "<li class='list-group-item'>"+array[i].account.name+"</li>" +
+					"<li class='list-group-item'>"+array[i].value+"</li>";
+				html += "<ul class='list-group text-center'>" +li+"</ul>";
+			}
+			$("#extract-list").html(html)
+			html = "";
+		}
+
+		function logged(data) {
+			let date = new Date();
+			let datetime = date.getFullYear()
+				+ (date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth())
+				+ (date.getDay() < 10 ? "0" + date.getDay() : date.getDay())
+				+ (date.getHours() < 10 ? "0" + date.getHours() : date.getHours())
+				+ (date.getMinutes() + 15);
+
+			token = data.token;
+
+			localStorage.setItem("token", token);
+			localStorage.setItem("tokenExpires", datetime)
+
+			$("#loginModal").modal('hide');
+		}
+
+		$("#hideAmmountBtn").click(function() {
+			$("#ammountSpan").hide();
+			$("#hideAmmountBtn").hide();
+
+			$("#hiddenAmmountSpan").show();
+			$("#showAmmountBtn").show();
+		});
+
+		$("#showAmmountBtn").click(function() {
+			$("#hiddenAmmountSpan").hide();
+			$("#showAmmountBtn").hide();
+
+			$("#ammountSpan").show();
+			$("#hideAmmountBtn").show();
+		});
+	});
+</script>
+</body>
+</html>
