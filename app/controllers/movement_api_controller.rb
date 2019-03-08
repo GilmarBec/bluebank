@@ -28,9 +28,8 @@ class MovementApiController < ApiController
 
   def check_amount
     if !@client.nil?
-      render json: {"current_amount": @client.current_amount, "credit": @client.credit}
+      render json: @client.current_amount.to_s
     end
-    render json: ""
   end
 
   def extract

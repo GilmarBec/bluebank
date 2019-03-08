@@ -189,14 +189,18 @@
 		$("#transferenceModal").modal('show');
 
 	});
+
 	$("#extract").click(function() {
 		$("#extractModal").modal('show');
 
 	});
+
 	$(function() {
 		let url_base = "http://localhost:3000/";
 
 		url_base = "https://bluebank-site.herokuapp.com/";
+
+		checkAmount();
 
 		validateCurrentAccess();
 		function validateCurrentAccess() {
@@ -267,6 +271,7 @@
 				},
 				success: function(data) {
 					logged(data);
+					checkAmount();
 				},
 				error: function () {
 					alert("Número da conta inválido ou senha incorreta!");
@@ -297,7 +302,7 @@
 					token: token
 				},
 				success: function() {
-					
+					checkAmount()
 				},
 				error: function () {
 					alert("Conta inválida ou quantia de fundos insuficiente!");
@@ -321,13 +326,14 @@
 				},
 				success: function(data) {
 					loadExtract(data);
+					checkAmount();
 				},
 				error: function () {
 					alert("Token inválido ou servidor inacessivel!");
 				}
 			});
 		}
-		
+
 		function loadExtract(array){
 			$("#extract-list").html("");
 			for(i = 1; i <= array.length; i++){
@@ -338,6 +344,34 @@
 			$("#extract-list").html(html)
 			html = "";
 		}
+
+		function checkAmount() {
+			if (!validateCurrentAccess()) {
+				return false;
+			}
+
+			let token = localStorage.getItem("token");
+
+			$.ajax({
+				url: url_base+"movement_api/check_amount.json",
+				method: "get",
+				data: {
+					token: token
+				},
+				success: function(data) {
+					loadCurrentAmount(data);
+				},
+				error: function () {
+					console.log("Token inválido ou servidor inacessivel!");
+				}
+			});
+		}
+
+		function loadCurrentAmount(value){
+			$("#currentAmmount").html(value + " R$")
+		}
+
+
 
 		function logged(data) {
 			let date = new Date();
