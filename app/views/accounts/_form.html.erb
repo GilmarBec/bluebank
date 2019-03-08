@@ -5,18 +5,9 @@
   <label for="credit">Crédito: </label>
   <input type="text" id="credit">
 
-  <label for="account_type">Tipo de Conta: </label>
-  <select id="account_type">
-    <% @account_types.each do |account_type| %>
-      <option value="<%= account_type.id %>"><%= account_type.name %></option>
-    <% end %>
-  </select>
+  <label for="agency">Agency: </label>
+  <input type="text" id="agency">
 
-  <select id="agency">
-    <% @agencies.each do |agency| %>
-      <option value="<%= agency.id %>"><%= agency.number %></option>
-    <% end %>
-  </select>
 
   <label for="client">CPF do Cliente: </label>
   <input type="text" id="client">
@@ -39,9 +30,8 @@
       params = [];
       params["number"] = "<%= @account.number %>";
       params["credit"] = "<%= @account.credit %>";
-      params["agency"] = "<%= @account.agency.id %>";
-      params["account_type"] = "<%= @account.account_type.id %>";
-      params["client"] = "<%= @account.client.cpf %>";
+      params["agency"] = "<%= @account.agency %>";
+      params["client"] = "<%= @account.cpf %>";
 
       return params;
     }
