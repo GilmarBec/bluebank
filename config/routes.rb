@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'movement_api/transaction'
   get 'movement_api/check_amount'
   get 'movement_api/extract'
-  get 'movement_api/create_session'
+  match 'movement_api/create_session', via: [:get, :post]
   get 'movement_api/destroy_session'
 
   get 'register_employee/index'

@@ -44,7 +44,7 @@ class MovementApiController < ApiController
   end
 
   def create_session
-    client = Account.find_by(number: params[:number], agency: params[agency])
+    client = Account.find_by(number: params[:number], agency: params[:agency])
     if !client.nil? && client.authenticate(params[:password])
       token = SecureRandom.hex(16).to_s
       client.update(token: token.to_s)

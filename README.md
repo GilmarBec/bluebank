@@ -1,38 +1,22 @@
-# Blue Bank - Estamos contratando!
+# BlueBank
 
+## Installation
 
-**Blue Bank** é uma instituição financeira fictícia cujas demandas de desenvolvimento de software têm aumentado muito nos últimos meses. Tentando manter-se sempre atualizada, busca novos desenvolvedores de software que sejam capazes de solucionar problemas de forma eficaz e elegante.
+Go to [Heroku](https://dashboard.heroku.com)
+Create a new APP
 
-Como candidato, seu objetivo é desenvolver uma aplicação que seja capaz de demonstrar seus conhecimentos em desenvolvimento frontend e backend, ou seja, provar ser um legítimo desenvolvedor Fullstack.
+Go to the tab Deploy
+Connect the Heroku with your Git Project
+Chose the Brach master
+Click in deploy branch
 
-Para isso será necessário criar uma aplicação que possibilite a transferência de fundos entre contas de dois correntistas.
+Click in More
+Click in Run console
+Run the commands
 
-## Informações importantes sobre o negócio
-Um correntista é identificado pelo seu id, CPF, número da conta corrente e código da agência.
+```bash
+rake db:migrate
+rake db:seed
+```
 
-As transferências devem ter controle transacional para evitar débitos e créditos inválidos.
-
-A existência da conta de destino deve ser validada, assim como a existência de fundos suficientes para o valor a ser transferido.
-
-## Requisitos técnicos
-- Interface web ou mobile;
-- Backend .NET Core, Spring Boot, Ruby, Python, PHP ou outra de sua preferência. Adoramos novas tecnologias!;
-- Utilizar OOP;
-- Banco de dados relacional com ORM (Lembre-se que a legislação obriga os bancos a manter dados históricos por anos);
-- Instruções para deploy e execução;
-- Pequeno memorando com justificativa de decisões técnicas.
-
-## Como destacar-se?
-- Aplicar SOLID;
-- Escrever testes unitários com boa cobertura;
-- Arquitetar com SPA + API;
-- Fazer o deploy da aplicação no seu ambiente de nuvem preferido ([IBM Bluemix](https://console.ng.bluemix.net/), AWS, Openshift, Heroku).
-
-
-## Frameworks são bem vindos!
-Angular, jQuery, Bootstrap, Material, ModuleJS, Sequelize, Spring, Hibernate.
-
-## Como enviar o código para análise?
-Como se candidatar?
-Efetue um fork do projeto e envie um pedido de pull request.
-Lembre-se que ele será analisado por desenvolvedores, então não economize nos comentários de commit.
+Open the site and navegate in the system
